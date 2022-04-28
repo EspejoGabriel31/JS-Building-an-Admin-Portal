@@ -12,16 +12,18 @@ function displayBook(book){
     let bookContainer = document.querySelector('#root')
     let bookObject = document.createElement('li')
     bookObject.textContent = book.title
+
     let bookQuantity = document.createElement('input')
     bookQuantity.value = book.quantity
     bookObject.append(bookQuantity)
+
     let saveButton = document.createElement('button')
     saveButton.textContent = "Save"
     saveButton.addEventListener('click', async () =>{
         console.log(bookQuantity.value)
-         let response = await fetch('http://localhost:3001/updateBook', {
-             method: 'PATCH',
-             headers: {
+        let response1 = await fetch('http://localhost:3001/updateBook', {
+            method: 'PATCH',
+            headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
@@ -33,7 +35,15 @@ function displayBook(book){
     })
     bookObject.append(saveButton)
 
-
+    let removeButton = document.createElement('button')
+    removeButton.textContent = "Delete"
+    removeButton.addEventListener('click', async () => {
+        bookContainer.removeChild(bookObject)
+        let response2 = await fetch(`http://localhost:3001/removeBook/${book.id}`, {
+            method: 'DELETE' 
+        })
+    })
+    bookObject.append(removeButton)
     // bookContainer.innerHTML += `
     //     <div class="d-flex flex-row">
     //         <div class="book-title">${book.title}</div>
